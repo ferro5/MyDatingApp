@@ -29,6 +29,7 @@ namespace DatingApp.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             var appSettingsSections = Configuration.GetSection("AppSettings");
             services.AddAutoMapper();
+            services.AddAuthentication();
             var appSettings = appSettingsSections.Get<AppSettings>();
             var key = Encoding.UTF8.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>

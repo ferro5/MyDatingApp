@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.API.Data;
@@ -6,12 +8,15 @@ using DatingApp.API.DTO;
 using DatingApp.API.Models;
 using DatingApp.API.Settings;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.API.Controllers
-{  
-    [ApiController]
+{
+  
+    
     [Route("api/[controller]")]
+    [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _authRepository;
@@ -26,19 +31,28 @@ namespace DatingApp.API.Controllers
             _mapper = mapper;
         }
 
-        
+    
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]UserForLoginDto userForLoginDto)
+        public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
-            return Ok(new
-            {
-                token = await _jwtTokenGenerator.GenerateJwtTokenString(userForLoginDto.Username,
+
+            return Ok(
+                new
+                {
+                    token = await _jwtTokenGenerator.GenerateJwtTokenString(userForLoginDto.Username,
                     userForLoginDto.Password)
-            });
+                });
         }
-       
+        [HttpGet("log")]
+        public IActionResult Log()
+        {
+            string testString = "test";
+            return Ok(testString);
+
+        }
+
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
             try
             {
